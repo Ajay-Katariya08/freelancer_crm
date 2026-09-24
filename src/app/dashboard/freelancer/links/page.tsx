@@ -5,6 +5,7 @@ import { generateClientLink, deleteClientLink } from "@/app/actions/links"
 import { formatCurrency } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
@@ -90,9 +91,13 @@ export default async function InviteLinksPage() {
                   </p>
                 </div>
 
-                <Button type="submit" size="sm" className="w-full font-medium text-xs shadow-xs">
+                <SubmitButton
+                  size="sm"
+                  pendingText="Generating Link..."
+                  className="w-full font-medium text-xs shadow-xs"
+                >
                   Generate Link
-                </Button>
+                </SubmitButton>
               </form>
             )}
           </CardContent>
@@ -152,14 +157,13 @@ export default async function InviteLinksPage() {
                             await deleteClientLink(link.id)
                           }}
                         >
-                          <Button
+                          <SubmitButton
                             variant="ghost"
                             size="xs"
-                            type="submit"
                             className="text-destructive hover:bg-destructive/10 text-[11px]"
                           >
                             <Trash2 className="size-3" />
-                          </Button>
+                          </SubmitButton>
                         </form>
                       </div>
                     </div>

@@ -8,6 +8,7 @@ import { updateTaskStatus } from "@/app/actions/tasks"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -197,9 +198,9 @@ export default async function ClientDetailPage({ params }: ClientDetailPageProps
                   />
                 </div>
 
-                <Button type="submit" size="sm" className="w-full font-medium text-xs shadow-xs">
+                <SubmitButton size="sm" pendingText="Recording..." className="w-full font-medium text-xs shadow-xs">
                   Record Hours
-                </Button>
+                </SubmitButton>
               </form>
             </CardContent>
           </Card>
@@ -254,9 +255,13 @@ export default async function ClientDetailPage({ params }: ClientDetailPageProps
                   />
                 </div>
 
-                <Button type="submit" size="sm" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs">
+                <SubmitButton
+                  size="sm"
+                  pendingText="Publishing..."
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs"
+                >
                   Publish to Client Portal
-                </Button>
+                </SubmitButton>
               </form>
             </CardContent>
           </Card>

@@ -6,6 +6,7 @@ import { formatDateTime } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
@@ -93,9 +94,9 @@ export default async function FreelancerTasksPage() {
                       await updateTaskStatus(task.id, "IN_PROGRESS")
                     }}
                   >
-                    <Button size="xs" variant="outline" type="submit" className="text-[10px]">
+                    <SubmitButton size="xs" variant="outline" className="text-[10px]">
                       Move to In Progress
-                    </Button>
+                    </SubmitButton>
                   </form>
                 )}
 
@@ -106,9 +107,9 @@ export default async function FreelancerTasksPage() {
                       await updateTaskStatus(task.id, "COMPLETED")
                     }}
                   >
-                    <Button size="xs" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px]" type="submit">
+                    <SubmitButton size="xs" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px]">
                       Mark Completed
-                    </Button>
+                    </SubmitButton>
                   </form>
                 )}
               </div>

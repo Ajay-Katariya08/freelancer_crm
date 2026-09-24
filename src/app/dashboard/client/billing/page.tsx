@@ -5,6 +5,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
 import { cancelClientSubscription } from "@/app/actions/billing"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Badge } from "@/components/ui/badge"
 import { CreditCard, Calendar, Clock, ShieldAlert } from "lucide-react"
 
@@ -106,9 +107,14 @@ export default async function ClientBillingPage() {
                 await cancelClientSubscription(subscription.id)
               }}
             >
-              <Button variant="outline" size="sm" type="submit" className="text-destructive hover:bg-destructive/10 text-xs">
+              <SubmitButton
+                variant="outline"
+                size="sm"
+                pendingText="Cancelling..."
+                className="text-destructive hover:bg-destructive/10 text-xs"
+              >
                 Cancel Retainer Subscription
-              </Button>
+              </SubmitButton>
             </form>
           </CardFooter>
         ) : null}

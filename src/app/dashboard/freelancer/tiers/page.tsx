@@ -5,6 +5,7 @@ import { formatCurrency } from "@/lib/utils"
 import { createTier, toggleTierStatus, deleteTier } from "@/app/actions/tiers"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/ui/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -95,9 +96,12 @@ export default async function RetainerTiersPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full text-xs font-semibold shadow-xs">
+              <SubmitButton
+                pendingText="Saving & Syncing..."
+                className="w-full text-xs font-semibold shadow-xs"
+              >
                 Save & Sync with Razorpay
-              </Button>
+              </SubmitButton>
             </form>
           </CardContent>
         </Card>
@@ -157,10 +161,10 @@ export default async function RetainerTiersPage() {
                         await toggleTierStatus(tier.id, tier.isActive)
                       }}
                     >
-                      <Button variant="ghost" size="xs" type="submit" className="gap-1 text-[11px]">
+                      <SubmitButton variant="ghost" size="xs" className="gap-1 text-[11px]">
                         <Power className="size-3" />
                         {tier.isActive ? "Deactivate" : "Activate"}
-                      </Button>
+                      </SubmitButton>
                     </form>
 
                     <form
@@ -169,14 +173,13 @@ export default async function RetainerTiersPage() {
                         await deleteTier(tier.id)
                       }}
                     >
-                      <Button
+                      <SubmitButton
                         variant="ghost"
                         size="xs"
-                        type="submit"
                         className="text-destructive hover:bg-destructive/10 text-[11px] gap-1"
                       >
                         <Trash2 className="size-3" /> Delete
-                      </Button>
+                      </SubmitButton>
                     </form>
                   </div>
                 </Card>

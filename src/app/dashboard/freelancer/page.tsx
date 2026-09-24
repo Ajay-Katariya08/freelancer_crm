@@ -79,12 +79,14 @@ export default async function FreelancerDashboardPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
             href="/dashboard/freelancer/links"
+            prefetch={true}
             className={buttonVariants({ variant: "outline", size: "sm", className: "gap-1.5 text-xs" })}
           >
             <Link2 className="size-3.5" /> Generate Invite Link
           </Link>
           <Link
             href="/dashboard/freelancer/tiers"
+            prefetch={true}
             className={buttonVariants({
               size: "sm",
               className: "gap-1.5 text-xs shadow-xs",
@@ -200,6 +202,7 @@ export default async function FreelancerDashboardPage() {
             </div>
             <Link
               href="/dashboard/freelancer/tasks"
+              prefetch={true}
               className={buttonVariants({ variant: "ghost", size: "sm", className: "text-xs" })}
             >
               View all <ArrowUpRight className="ml-1 size-3" />
@@ -251,6 +254,7 @@ export default async function FreelancerDashboardPage() {
           </div>
           <Link
             href="/dashboard/freelancer/tiers"
+            prefetch={true}
             className={buttonVariants({ variant: "outline", size: "sm", className: "text-xs" })}
           >
             Manage Tiers

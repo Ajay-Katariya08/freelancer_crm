@@ -70,6 +70,7 @@ export default async function ClientDashboardPage() {
         </div>
         <Link
           href="/dashboard/client/tasks"
+          prefetch={true}
           className={buttonVariants({
             className: "gap-1.5 text-xs shadow-xs",
           })}
@@ -161,6 +162,7 @@ export default async function ClientDashboardPage() {
             </div>
             <Link
               href="/dashboard/client/tasks"
+              prefetch={true}
               className={buttonVariants({ variant: "ghost", size: "sm", className: "text-xs" })}
             >
               View all <ArrowRight className="ml-1 size-3" />
@@ -211,6 +213,7 @@ export default async function ClientDashboardPage() {
             </div>
             <Link
               href="/dashboard/client/deliverables"
+              prefetch={true}
               className={buttonVariants({ variant: "ghost", size: "sm", className: "text-xs" })}
             >
               View all <ArrowRight className="ml-1 size-3" />

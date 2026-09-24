@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
@@ -15,7 +16,7 @@ export type Session = {
   user: SessionUser
 }
 
-export async function auth(): Promise<Session | null> {
+export const auth = cache(async (): Promise<Session | null> => {
   const supabase = await createClient()
   const {
     data: { user },
@@ -49,7 +50,7 @@ export async function auth(): Promise<Session | null> {
   return {
     user: dbUser,
   }
-}
+})
 
 export async function signOut() {
   const supabase = await createClient()
