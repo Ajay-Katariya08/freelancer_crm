@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { HoursChart } from "@/components/charts/hours-chart"
 import Link from "next/link"
 import {
   Clock,
@@ -130,6 +131,26 @@ export default async function ClientDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="border-border bg-card shadow-xs">
+        <CardHeader>
+          <CardTitle className="text-base font-semibold">Hours Allocation</CardTitle>
+          <CardDescription className="text-xs">
+            Retainer hours utilized vs remaining for the current billing period
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <HoursChart
+            data={[
+              {
+                name: tier.name,
+                used: subscription.hoursUsed,
+                remaining: hoursRemaining,
+              },
+            ]}
+          />
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="border-border bg-card shadow-xs">

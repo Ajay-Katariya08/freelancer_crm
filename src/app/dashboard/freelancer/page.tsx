@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MRRChart } from "@/components/charts/mrr-chart"
+import { HoursChart } from "@/components/charts/hours-chart"
 import Link from "next/link"
 import {
   Users,
@@ -59,6 +60,12 @@ export default async function FreelancerDashboardPage() {
       mrr: Math.max(mrr, 0),
     }
   })
+
+  const clientHoursData = activeSubscriptions.map((s) => ({
+    name: s.client.name?.split(" ")[0] || s.client.email.split("@")[0],
+    used: s.hoursUsed,
+    remaining: Math.max(s.tier.monthlyHours - s.hoursUsed, 0),
+  }))
 
   return (
     <div className="space-y-8">
@@ -152,8 +159,8 @@ export default async function FreelancerDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-7">
-        <Card className="border-border bg-card shadow-xs lg:col-span-4">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-border bg-card shadow-xs">
           <CardHeader>
             <CardTitle className="text-base font-semibold">Monthly Recurring Revenue (MRR)</CardTitle>
             <CardDescription className="text-xs">
@@ -165,7 +172,27 @@ export default async function FreelancerDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border bg-card shadow-xs lg:col-span-3">
+        <Card className="border-border bg-card shadow-xs">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Client Retainer Hours</CardTitle>
+            <CardDescription className="text-xs">
+              Hours logged vs remaining per active client
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {clientHoursData.length === 0 ? (
+              <div className="h-[280px] flex items-center justify-center text-xs text-muted-foreground border border-dashed border-border rounded-lg">
+                No active retainers yet
+              </div>
+            ) : (
+              <HoursChart data={clientHoursData} />
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-border bg-card shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-base font-semibold">Recent Client Tasks</CardTitle>

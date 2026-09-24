@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { HoursChart } from "@/components/charts/hours-chart"
 import { ArrowLeft, Clock, Upload, Download, Package } from "lucide-react"
 import Link from "next/link"
 
@@ -262,6 +263,26 @@ export default async function ClientDetailPage({ params }: ClientDetailPageProps
         </div>
 
         <div className="lg:col-span-2 space-y-6">
+          <Card className="border-border bg-card shadow-xs">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold">Hours Allocation</CardTitle>
+              <CardDescription className="text-xs">
+                Monthly retainer hours utilized vs remaining for this cycle
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <HoursChart
+                data={[
+                  {
+                    name: subscription.tier.name,
+                    used: subscription.hoursUsed,
+                    remaining: hoursRemaining,
+                  },
+                ]}
+              />
+            </CardContent>
+          </Card>
+
           <Tabs defaultValue="tasks" className="w-full">
             <TabsList className="w-full justify-start border-b border-border rounded-none bg-transparent p-0">
               <TabsTrigger
