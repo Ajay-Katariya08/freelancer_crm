@@ -1,14 +1,24 @@
-import { auth, signIn } from "@/lib/auth"
+import { auth } from "@/lib/auth"
+import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
+import { sendEmail } from "@/lib/email"
+import { MagicLinkEmail } from "@/components/emails/magic-link"
 import { redirect } from "next/navigation"
+import { headers } from "next/headers"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Briefcase, ArrowLeft } from "lucide-react"
+import { BrandLogo } from "@/components/brand-logo"
+import { ArrowLeft, AlertCircle } from "lucide-react"
 import Link from "next/link"
 
-export default async function LoginPage() {
+type LoginPageProps = {
+  searchParams: Promise<{ error?: string }>
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
   const session = await auth()
   if (session?.user) {
     if (session.user.role === "CLIENT") {
@@ -17,6 +27,8 @@ export default async function LoginPage() {
       redirect("/dashboard/freelancer")
     }
   }
+
+  const { error } = await searchParams
 
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center px-4 bg-muted/20">
@@ -32,14 +44,19 @@ export default async function LoginPage() {
 
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="flex size-12 items-center justify-center rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-500/20 mb-3">
-            <Briefcase className="size-6" />
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight">Sign in to RetainFlow</h1>
+          <BrandLogo size="lg" className="mb-3" />
+          <h1 className="text-2xl font-bold tracking-tight">Sign in to AuraFlow</h1>
           <p className="text-xs text-muted-foreground mt-1">
             Access your freelancer dashboard or client portal
           </p>
         </div>
+
+        {error && (
+          <div className="mb-4 flex items-center gap-2 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-xs text-destructive">
+            <AlertCircle className="size-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
 
         <Card className="border-border shadow-md bg-card">
           <CardHeader className="space-y-1 pb-4">
@@ -53,7 +70,19 @@ export default async function LoginPage() {
               <form
                 action={async () => {
                   "use server"
-                  await signIn("google")
+                  const supabase = await createClient()
+                  const headerList = await headers()
+                  const origin =
+                    headerList.get("origin") ||
+                    process.env.NEXT_PUBLIC_APP_URL ||
+                    "http://localhost:3000"
+                  const { data } = await supabase.auth.signInWithOAuth({
+                    provider: "google",
+                    options: {
+                      redirectTo: `${origin}/auth/callback`,
+                    },
+                  })
+                  if (data?.url) redirect(data.url)
                 }}
               >
                 <Button variant="outline" className="w-full gap-2 text-xs font-medium" type="submit">
@@ -82,7 +111,19 @@ export default async function LoginPage() {
               <form
                 action={async () => {
                   "use server"
-                  await signIn("github")
+                  const supabase = await createClient()
+                  const headerList = await headers()
+                  const origin =
+                    headerList.get("origin") ||
+                    process.env.NEXT_PUBLIC_APP_URL ||
+                    "http://localhost:3000"
+                  const { data } = await supabase.auth.signInWithOAuth({
+                    provider: "github",
+                    options: {
+                      redirectTo: `${origin}/auth/callback`,
+                    },
+                  })
+                  if (data?.url) redirect(data.url)
                 }}
               >
                 <Button variant="outline" className="w-full gap-2 text-xs font-medium" type="submit">
@@ -109,7 +150,50 @@ export default async function LoginPage() {
               action={async (formData: FormData) => {
                 "use server"
                 const email = formData.get("email") as string
-                await signIn("resend", { email, redirectTo: "/dashboard/freelancer" })
+                const adminClient = createAdminClient()
+                const headerList = await headers()
+                const origin =
+                  headerList.get("origin") ||
+                  process.env.NEXT_PUBLIC_APP_URL ||
+                  "http://localhost:3000"
+
+                const { data, error } = await adminClient.auth.admin.generateLink({
+                  type: "magiclink",
+                  email,
+                  options: {
+                    redirectTo: `${origin}/auth/callback`,
+                  },
+                })
+
+                if (error || !data?.properties) {
+                  redirect(
+                    `/login?error=${encodeURIComponent(
+                      error?.message || "Failed to generate login link"
+                    )}`
+                  )
+                }
+
+                const tokenHash = data.properties.hashed_token
+                const verifyUrl = tokenHash
+                  ? `${origin}/auth/callback?token_hash=${tokenHash}&type=email`
+                  : data.properties.action_link
+
+                const emailResult = await sendEmail({
+                  to: email,
+                  subject: "Sign in to AuraFlow",
+                  react: MagicLinkEmail({ url: verifyUrl }),
+                  text: `Sign in to AuraFlow: ${verifyUrl}`,
+                })
+
+                if (!emailResult.success) {
+                  redirect(
+                    `/login?error=${encodeURIComponent(
+                      emailResult.error?.message || "Failed to send email"
+                    )}`
+                  )
+                }
+
+                redirect("/login/verify-request")
               }}
               className="space-y-3"
             >

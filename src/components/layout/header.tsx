@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -29,6 +30,7 @@ type HeaderProps = {
 }
 
 export function Header({ user }: HeaderProps) {
+  const router = useRouter()
   const [open, setOpen] = React.useState(false)
 
   const initials = user?.name
@@ -105,7 +107,12 @@ export function Header({ user }: HeaderProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              onClick={async () => {
+                const supabase = createClient()
+                await supabase.auth.signOut()
+                router.push("/login")
+                router.refresh()
+              }}
               className="text-destructive focus:bg-destructive/10 cursor-pointer gap-2"
             >
               <LogOut className="size-4" />

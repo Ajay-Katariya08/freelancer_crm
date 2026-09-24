@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { BrandLogo } from "@/components/brand-logo";
 import {
   Card,
   CardContent,
@@ -33,14 +34,7 @@ export default async function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-border/70 bg-background/85 px-4 md:px-12 backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold shadow-md shadow-primary/20">
-            <Briefcase className="size-5" />
-          </div>
-          <span className="font-extrabold text-lg tracking-tight bg-linear-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-300 bg-clip-text text-transparent">
-            RetainFlow
-          </span>
-        </div>
+        <BrandLogo size="md" />
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -80,7 +74,7 @@ export default async function HomePage() {
       </header>
 
       <main className="flex-1">
-        <section className="relative overflow-hidden px-4 pt-20 pb-28 md:px-12 md:pt-28 md:pb-36">
+        <section className="relative overflow-hidden px-4 pt-20 pb-28 md:px-12 md:pt-28 md:pb-30">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.15),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.25),rgba(0,0,0,0))]" />
 
           <div className="mx-auto max-w-5xl text-center">
@@ -88,11 +82,11 @@ export default async function HomePage() {
               variant="outline"
               className="mb-6 inline-flex items-center gap-1.5 rounded-full border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary"
             >
-              <Sparkles className="size-3.5 text-primary" />
+              <Send className="size-3.5 text-primary" />
               No CRM clutter. Just direct recurring retainers.
             </Badge>
 
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
+            <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
               Turn One-Off Clients Into{" "}
               <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent">
                 Predictable Monthly Retainers
@@ -111,8 +105,7 @@ export default async function HomePage() {
                 className={buttonVariants({
                   variant: "default",
                   size: "lg",
-                  className:
-                    "w-full sm:w-auto shadow-xl shadow-primary/25 px-8 text-base font-semibold",
+                  className: "w-full sm:w-auto  px-8 text-base font-semibold",
                 })}
               >
                 Start Free Retainer Manager{" "}
@@ -123,7 +116,7 @@ export default async function HomePage() {
                 className={buttonVariants({
                   size: "lg",
                   variant: "outline",
-                  className: "w-full sm:w-auto text-base",
+                  className: "w-full sm:w-auto ",
                 })}
               >
                 See How It Works
@@ -333,7 +326,7 @@ export default async function HomePage() {
 
       <footer className="border-t border-border/70 py-8 px-4 md:px-12 text-center text-xs text-muted-foreground">
         <p>
-          © {new Date().getFullYear()} RetainFlow. Built for high-leverage
+          © {new Date().getFullYear()} AuraFlow. Built for high-leverage
           freelancers.
         </p>
       </footer>

@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 
 type NavItem = {
   title: string;
@@ -78,24 +79,15 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "flex max-h-dvh! w-full md:w-64 flex-col border-r border-border bg-card text-card-foreground",
+        "flex min-h-dvh! w-full md:w-64 flex-col border-r border-border bg-card text-card-foreground",
         className,
       )}
     >
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold shadow-md shadow-indigo-500/20">
-            <Briefcase className="size-5" />
-          </div>
-          <div>
-            <span className="font-bold tracking-tight text-foreground block text-sm">
-              RetainFlow
-            </span>
-            <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground">
-              {role === "CLIENT" ? "Client Portal" : "Freelancer CRM"}
-            </span>
-          </div>
-        </div>
+        <BrandLogo
+          size="md"
+          subtitle={role === "CLIENT" ? "Client Portal" : "Freelancer CRM"}
+        />
 
         {onClose && (
           <Button

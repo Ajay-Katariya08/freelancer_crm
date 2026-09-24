@@ -17,9 +17,12 @@ const plusJakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "RetainFlow — Freelancer Direct Retainer Platform",
+  title: "AuraFlow — Freelancer Direct Retainer Platform",
   description:
     "Dead-simple recurring retainer subscriptions, client portals, automated tasks, and MRR tracking for freelancers.",
+  icons: {
+    icon: "/icon.svg",
+  },
 }
 
 type RootLayoutProps = {

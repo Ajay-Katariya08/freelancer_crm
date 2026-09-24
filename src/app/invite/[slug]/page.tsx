@@ -5,7 +5,8 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { RazorpayCheckoutButton } from "@/components/razorpay-checkout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Check, ShieldCheck, Clock, Zap, Briefcase } from "lucide-react"
+import { BrandLogo } from "@/components/brand-logo"
+import { Check, ShieldCheck, Clock, Zap } from "lucide-react"
 
 type InvitePageProps = {
   params: Promise<{ slug: string }>
@@ -32,12 +33,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
   return (
     <div className="min-h-screen bg-muted/20 flex flex-col justify-between">
       <header className="flex h-16 w-full items-center justify-between border-b border-border bg-card px-4 md:px-12">
-        <div className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold">
-            <Briefcase className="size-4" />
-          </div>
-          <span className="font-bold tracking-tight text-sm">RetainFlow</span>
-        </div>
+        <BrandLogo size="sm" />
         <ThemeToggle />
       </header>
 
@@ -141,7 +137,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
       </main>
 
       <footer className="border-t border-border py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} RetainFlow. Powered by Razorpay Subscriptions.
+        © {new Date().getFullYear()} AuraFlow. Powered by Razorpay Subscriptions.
       </footer>
     </div>
   )
