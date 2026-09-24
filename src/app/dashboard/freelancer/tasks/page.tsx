@@ -24,11 +24,11 @@ export default async function FreelancerTasksPage() {
     orderBy: { createdAt: "desc" },
   })
 
-  const pending = tasks.filter((t) => t.status === "PENDING")
-  const inProgress = tasks.filter((t) => t.status === "IN_PROGRESS")
-  const completed = tasks.filter((t) => t.status === "COMPLETED")
+  const pending = tasks.filter((t: any) => t.status === "PENDING")
+  const inProgress = tasks.filter((t: any) => t.status === "IN_PROGRESS")
+  const completed = tasks.filter((t: any) => t.status === "COMPLETED")
 
-  const renderTaskList = (taskList: typeof tasks) => {
+  const renderTaskList = (taskList: any) => {
     if (taskList.length === 0) {
       return (
         <Card className="border-dashed border-border bg-transparent p-8 text-center text-xs text-muted-foreground">
@@ -39,7 +39,7 @@ export default async function FreelancerTasksPage() {
 
     return (
       <div className="space-y-3">
-        {taskList.map((task) => (
+        {taskList.map((task: any) => (
           <Card key={task.id} className="border-border bg-card shadow-xs">
             <CardHeader className="p-4 pb-2">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">

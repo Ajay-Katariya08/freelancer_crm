@@ -42,10 +42,10 @@ export default async function FreelancerDashboardPage() {
     }),
   ])
 
-  const activeSubscriptions = subscriptions.filter((s) => s.status === "ACTIVE")
-  const currentMRRInPaise = activeSubscriptions.reduce((acc, s) => acc + s.tier.priceInPaise, 0)
-  const totalHoursLogged = hourLogs.reduce((acc, log) => acc + log.hours, 0)
-  const pendingTasksCount = tasks.filter((t) => t.status === "PENDING").length
+  const activeSubscriptions = subscriptions.filter((s: any) => s.status === "ACTIVE")
+  const currentMRRInPaise = activeSubscriptions.reduce((acc: number, s: any) => acc + s.tier.priceInPaise, 0)
+  const totalHoursLogged = hourLogs.reduce((acc: number, log: any) => acc + log.hours, 0)
+  const pendingTasksCount = tasks.filter((t: any) => t.status === "PENDING").length
 
   const currentMonthMRR = currentMRRInPaise / 100
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -61,7 +61,7 @@ export default async function FreelancerDashboardPage() {
     }
   })
 
-  const clientHoursData = activeSubscriptions.map((s) => ({
+  const clientHoursData = activeSubscriptions.map((s: any) => ({
     name: s.client.name?.split(" ")[0] || s.client.email.split("@")[0],
     used: s.hoursUsed,
     remaining: Math.max(s.tier.monthlyHours - s.hoursUsed, 0),
@@ -212,7 +212,7 @@ export default async function FreelancerDashboardPage() {
               </div>
             ) : (
               <div className="space-y-3">
-                {tasks.map((task) => (
+                {tasks.map((task: any) => (
                   <div
                     key={task.id}
                     className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 p-3 text-xs"
@@ -263,7 +263,7 @@ export default async function FreelancerDashboardPage() {
             </div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {tiers.map((tier) => (
+              {tiers.map((tier: any) => (
                 <div
                   key={tier.id}
                   className="rounded-lg border border-border p-4 bg-muted/20 space-y-2 text-xs"

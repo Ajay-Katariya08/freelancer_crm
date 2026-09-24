@@ -110,7 +110,7 @@ export default async function RetainerTiersPage() {
             </Card>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {tiers.map((tier) => (
+              {tiers.map((tier: any) => (
                 <Card key={tier.id} className="border-border bg-card shadow-xs flex flex-col justify-between">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
@@ -141,7 +141,7 @@ export default async function RetainerTiersPage() {
                     <div className="flex items-baseline justify-between border-t border-border/60 pt-2 text-xs">
                       <span className="text-muted-foreground">Active Subscriptions</span>
                       <span className="font-semibold text-foreground">
-                        {tier.subscriptions.filter((s) => s.status === "ACTIVE").length}
+                        {tier.subscriptions.filter((s: any) => s.status === "ACTIVE").length}
                       </span>
                     </div>
                     {tier.razorpayPlanId ? (

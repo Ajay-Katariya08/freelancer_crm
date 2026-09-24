@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
-import type { Role } from "@prisma/client"
+export type Role = "FREELANCER" | "CLIENT"
 
 export type SessionUser = {
   id: string
