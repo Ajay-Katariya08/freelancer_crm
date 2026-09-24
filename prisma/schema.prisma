@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  FREELANCER
+  CLIENT
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  CREATED
+  AUTHENTICATED
+  ACTIVE
+  PENDING
+  HALTED
+  CANCELLED
+  COMPLETED
+  EXPIRED
+}
+
+model User {
+  id                      String         @id @default(cuid())
+  email                   String         @unique
+  emailVerified           DateTime?
+  name                    String?
+  image                   String?
+  role                    Role           @default(FREELANCER)
+  razorpayCustomerId      String?        @unique
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+
+  accounts                Account[]
+  sessions                Session[]
+
+  retainerTiers           RetainerTier[]
+  clientLinks             ClientLink[]
+  tasksAssigned           Task[]         @relation("FreelancerTasks")
+  freelancerSubscriptions Subscription[] @relation("FreelancerSubscriptions")
+
+  clientSubscriptions     Subscription[] @relation("ClientSubscriptions")
+  tasksCreated            Task[]         @relation("ClientTasks")
+  deliverables            Deliverable[]  @relation("ClientDeliverables")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model RetainerTier {
+  id             String         @id @default(cuid())
+  freelancerId   String
+  name           String
+  description    String?
+  monthlyHours   Int
+  priceInPaise   Int
+  razorpayPlanId String?        @unique
+  isActive       Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  freelancer     User           @relation(fields: [freelancerId], references: [id])
+  clientLinks    ClientLink[]
+  subscriptions  Subscription[]
+}
+
+model ClientLink {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  freelancerId String
+  tierId       String?
+  clientEmail  String?
+  isUsed       Boolean       @default(false)
+  expiresAt    DateTime?
+  createdAt    DateTime      @default(now())
+
+  freelancer   User          @relation(fields: [freelancerId], references: [id])
+  tier         RetainerTier? @relation(fields: [tierId], references: [id])
+}
+
+model Subscription {
+  id                     String             @id @default(cuid())
+  clientId               String
+  freelancerId           String
+  tierId                 String
+  razorpaySubscriptionId String             @unique
+  status                 SubscriptionStatus @default(CREATED)
+  currentPeriodStart     DateTime
+  currentPeriodEnd       DateTime
+  hoursUsed              Float              @default(0)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  client                 User               @relation("ClientSubscriptions", fields: [clientId], references: [id])
+  freelancer             User               @relation("FreelancerSubscriptions", fields: [freelancerId], references: [id])
+  tier                   RetainerTier       @relation(fields: [tierId], references: [id])
+  tasks                  Task[]
+  deliverables           Deliverable[]
+  hourLogs               HourLog[]
+}
+
+model Task {
+  id             String        @id @default(cuid())
+  title          String
+  description    String?
+  status         TaskStatus    @default(PENDING)
+  subscriptionId String
+  clientId       String
+  freelancerId   String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  subscription   Subscription  @relation(fields: [subscriptionId], references: [id])
+  client         User          @relation("ClientTasks", fields: [clientId], references: [id])
+  freelancer     User          @relation("FreelancerTasks", fields: [freelancerId], references: [id])
+  hourLogs       HourLog[]
+  deliverables   Deliverable[]
+}
+
+model HourLog {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  taskId         String?
+  hours          Float
+  description    String?
+  loggedAt       DateTime     @default(now())
+
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  task           Task?        @relation(fields: [taskId], references: [id])
+}
+
+model Deliverable {
+  id             String       @id @default(cuid())
+  title          String
+  fileUrl        String?
+  fileName       String?
+  fileSize       Int?
+  description    String?
+  subscriptionId String
+  taskId         String?
+  clientId       String
+  createdAt      DateTime     @default(now())
+
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  task           Task?        @relation(fields: [taskId], references: [id])
+  client         User         @relation("ClientDeliverables", fields: [clientId], references: [id])
+}
