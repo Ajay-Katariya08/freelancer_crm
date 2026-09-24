@@ -1,33 +1,33 @@
-import type { Metadata } from "next"
-import { Inter, Plus_Jakarta_Sans } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/sonner"
+import type { Metadata } from "next";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
-  title: "AuraFlow — Freelancer Direct Retainer Platform",
+  title: "AuraFlow - Freelancer Direct Retainer Platform",
   description:
     "Dead-simple recurring retainer subscriptions, client portals, automated tasks, and MRR tracking for freelancers.",
   icons: {
     icon: "/icon.svg",
   },
-}
+};
 
 type RootLayoutProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
@@ -48,5 +48,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
